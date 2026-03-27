@@ -4,56 +4,62 @@ const cors = require("cors");
 
 const app = express();
 
-/* middleware */
 app.use(cors());
 app.use(express.json());
 
 /* MongoDB connection */
 mongoose.connect(
-"mongodb://admin:Varshini2004@ac-th3dnmi-shard-00-00.m6bt3di.mongodb.net:27017,ac-th3dnmi-shard-00-01.m6bt3di.mongodb.net:27017,ac-th3dnmi-shard-00-02.m6bt3di.mongodb.net:27017/blogDB?ssl=true&replicaSet=atlas-engn42-shard-0&authSource=admin&appName=Cluster0"
+"mongodb+srv://admin:Varshini2004@cluster0.m6bt3di.mongodb.net/blogDB?retryWrites=true&w=majority"
 )
 .then(()=>console.log("MongoDB connected"))
 .catch(err=>console.log(err));
 
-/* model */
-const Post = mongoose.model("Post", {
+/* Schema */
+const PostSchema = new mongoose.Schema({
   title: String,
-  content: String,
+  content: String
 });
 
-/* test route */
-app.get("/", (req, res) => {
+const Post = mongoose.model("Post", PostSchema);
+
+/* test */
+app.get("/", (req,res)=>{
   res.send("API running");
 });
 
 /* get posts */
-app.get("/posts", async (req, res) => {
-  const posts = await Post.find().sort({ _id: -1 });
-  res.json(posts);
+app.get("/posts", async (req,res)=>{
+  try{
+    const posts = await Post.find().sort({_id:-1});
+    res.json(posts);
+  }catch(err){
+    res.status(500).json(err);
+  }
 });
 
-/* create post */
-app.post("/posts", async (req, res) => {
-  const { title, content } = req.body;
-
-  const post = new Post({
-    title,
-    content
-  });
-
-  await post.save();
-  res.json(post);
+/* create */
+app.post("/posts", async (req,res)=>{
+  try{
+    const post = new Post(req.body);
+    await post.save();
+    res.json(post);
+  }catch(err){
+    res.status(500).json(err);
+  }
 });
 
-/* delete post */
-app.delete("/posts/:id", async (req, res) => {
-  await Post.findByIdAndDelete(req.params.id);
-  res.send("Deleted");
+/* delete */
+app.delete("/posts/:id", async (req,res)=>{
+  try{
+    await Post.findByIdAndDelete(req.params.id);
+    res.send("Deleted");
+  }catch(err){
+    res.status(500).json(err);
+  }
 });
 
-/* start server */
 const PORT = process.env.PORT || 10000;
 
-app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+app.listen(PORT, ()=>{
+  console.log("Server running");
 });
