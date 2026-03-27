@@ -1,72 +1,63 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import API from "../api";
 
-function Login() {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const res = await API.post("/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://blog-platform-api-5n5q.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
-      // save token
       localStorage.setItem("token", res.data.token);
-
-      // save username
-      localStorage.setItem("user", res.data.user.name);
-
       navigate("/dashboard");
-    } catch (err) {
-      alert("Invalid credentials");
+
+    } catch (error) {
+      alert("Login failed");
+      console.log(error);
     }
   };
 
   return (
-    <div style={styles.container}>
+    <div>
       <h2>Login</h2>
 
-      <input
-        style={styles.input}
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input
-        style={styles.input}
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <br />
+        <br />
 
-      <button style={styles.button} onClick={handleLogin}>
-        Login
-      </button>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <br />
+        <br />
+
+        <button type="submit">Login</button>
+      </form>
     </div>
   );
-}
-
-const styles = {
-  container: {
-    width: "300px",
-    margin: "100px auto",
-  },
-
-  input: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "10px",
-  },
-
-  button: {
-    width: "100%",
-    padding: "10px",
-  },
 };
 
 export default Login;
