@@ -1,93 +1,55 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
+return (
+<div className="container">
 
-export default function Dashboard() {
-  const navigate = useNavigate();
+{/* Navbar */}
+<div className="navbar">
+<h2>Blog App</h2>
+<button className="logout-btn" onClick={logout}>
+Logout
+</button>
+</div>
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [posts, setPosts] = useState([]);
+<h2>Dashboard</h2>
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+{/* Create Post */}
+<div className="create-box">
+<input
+placeholder="Title"
+value={title}
+onChange={(e)=>setTitle(e.target.value)}
+/>
 
-  const fetchPosts = async () => {
-    try {
-      const res = await axios.get(
-        "https://blog-platform-api-5n5q.onrender.com/api/posts"
-      );
-      setPosts(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+<input
+placeholder="Content"
+value={content}
+onChange={(e)=>setContent(e.target.value)}
+/>
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+<button onClick={createPost}>
+Create Blog
+</button>
+</div>
 
-  const createPost = async (e) => {
-    e.preventDefault();
+<hr/>
 
-    try {
-      await axios.post(
-        "https://blog-platform-api-5n5q.onrender.com/api/posts",
-        { title, content },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
+{/* Posts */}
+{posts.map(post=>(
+<div className="post-card" key={post._id}>
 
-      setTitle("");
-      setContent("");
-      fetchPosts();
-    } catch (err) {
-      alert("Error creating post");
-    }
-  };
+<h3>{post.title}</h3>
+<p>{post.content}</p>
 
-  return (
-    <div>
-      <h1>Dashboard</h1>
+<div className="post-buttons">
+<button
+className="delete"
+onClick={()=>deletePost(post._id)}
+>
+Delete
+</button>
+</div>
 
-      <button onClick={logout}>Logout</button>
+</div>
+))}
 
-      <h2>Create Post</h2>
-
-      <form onSubmit={createPost}>
-        <input
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-
-        <br /><br />
-
-        <textarea
-          placeholder="Content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-
-        <br /><br />
-
-        <button type="submit">Create</button>
-      </form>
-
-      <h2>All Posts</h2>
-
-      {posts.map((post) => (
-        <div key={post._id}>
-          <h3>{post.title}</h3>
-          <p>{post.content}</p>
-          <hr />
-        </div>
-      ))}
-    </div>
-  );
-}
+</div>
+)
