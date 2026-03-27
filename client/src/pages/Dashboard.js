@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,28 +10,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (!token) {
       navigate("/login");
-      return;
     }
-
-    fetchPosts();
   }, [token, navigate]);
-
-  const fetchPosts = async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:5000/api/posts",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setPosts(res.data);
-    } catch (error) {
-      console.error("Error fetching posts", error);
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -41,31 +20,31 @@ const Dashboard = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Dashboard</h2>
+      <h1>Dashboard</h1>
 
       <button onClick={handleLogout}>Logout</button>
 
-      <hr />
+      <div style={{ marginTop: "20px" }}>
+        <h2>Your Posts</h2>
 
-      <h3>Your Posts</h3>
-
-      {posts.length === 0 ? (
-        <p>No posts available</p>
-      ) : (
-        posts.map((post) => (
-          <div
-            key={post._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              marginBottom: "10px",
-            }}
-          >
-            <h4>{post.title}</h4>
-            <p>{post.content}</p>
-          </div>
-        ))
-      )}
+        {posts.length === 0 ? (
+          <p>No posts yet</p>
+        ) : (
+          posts.map((post) => (
+            <div
+              key={post._id}
+              style={{
+                border: "1px solid #ccc",
+                padding: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <h3>{post.title}</h3>
+              <p>{post.content}</p>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
