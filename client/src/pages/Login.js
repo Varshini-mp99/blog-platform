@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+export default function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
+  const loginUser = async (e) => {
     e.preventDefault();
 
     try {
@@ -22,42 +22,28 @@ const Login = () => {
 
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
-
-    } catch (error) {
+    } catch (err) {
       alert("Login failed");
-      console.log(error);
     }
   };
 
   return (
-    <div>
+    <form onSubmit={loginUser}>
       <h2>Login</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <input
+        type="email"
+        placeholder="Email"
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        <br />
-        <br />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <br />
-        <br />
-
-        <button type="submit">Login</button>
-      </form>
-    </div>
+      <button type="submit">Login</button>
+    </form>
   );
-};
-
-export default Login;
+}
