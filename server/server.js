@@ -7,47 +7,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("YOUR_MONGODB_URL")
-.then(()=>console.log("MongoDB connected"))
-.catch(err=>console.log(err));
+mongoose.connect(
+"mongodb+srv://username:password@cluster.mongodb.net/blog"
+);
 
 const Post = mongoose.model("Post", {
-  title: String,
-  content: String,
-});
-
-/* TEST ROUTE */
-app.get("/", (req,res)=>{
-  res.send("API Running");
-});
-
-/* GET POSTS */
-app.get("/posts", async (req,res)=>{
-  const posts = await Post.find().sort({ _id: -1 });
-  res.json(posts);
-});
-
-/* CREATE POST */
-app.post("/posts", async (req,res)=>{
-  const {title, content} = req.body;
-
-  const post = new Post({
-    title,
-    content
-  });
-
-  await post.save();
-  res.json(post);
-});
-
-/* DELETE POST */
-app.delete("/posts/:id", async (req,res)=>{
-  await Post.findByIdAndDelete(req.params.id);
-  res.send("Deleted");
-});
-
-const PORT = process.env.PORT || 10000;
-
-app.listen(PORT, ()=>{
-  console.log("Server running");
+title:String,
+content:String
 });
