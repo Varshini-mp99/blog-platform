@@ -7,30 +7,33 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("YOUR_MONGODB_URL");
+mongoose.connect("YOUR_MONGODB_URL")
+.then(()=>console.log("MongoDB connected"))
+.catch(err=>console.log(err));
 
 const Post = mongoose.model("Post", {
   title: String,
   content: String,
 });
 
-app.get("/", (req, res) => {
+/* TEST ROUTE */
+app.get("/", (req,res)=>{
   res.send("API Running");
 });
 
 /* GET POSTS */
-app.get("/posts", async (req, res) => {
+app.get("/posts", async (req,res)=>{
   const posts = await Post.find().sort({ _id: -1 });
   res.json(posts);
 });
 
 /* CREATE POST */
-app.post("/posts", async (req, res) => {
-  const { title, content } = req.body;
+app.post("/posts", async (req,res)=>{
+  const {title, content} = req.body;
 
   const post = new Post({
     title,
-    content,
+    content
   });
 
   await post.save();
@@ -38,11 +41,13 @@ app.post("/posts", async (req, res) => {
 });
 
 /* DELETE POST */
-app.delete("/posts/:id", async (req, res) => {
+app.delete("/posts/:id", async (req,res)=>{
   await Post.findByIdAndDelete(req.params.id);
   res.send("Deleted");
 });
 
-app.listen(10000, () => {
-  console.log("Server running on port 10000");
+const PORT = process.env.PORT || 10000;
+
+app.listen(PORT, ()=>{
+  console.log("Server running");
 });
