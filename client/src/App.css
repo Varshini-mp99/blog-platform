@@ -12,7 +12,6 @@ body {
   min-height: 100vh;
 }
 
-/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -30,8 +29,6 @@ body {
   padding: 8px 18px;
   cursor: pointer;
 }
-
-/* Create Section */
 
 .create-box {
   display: flex;
@@ -54,8 +51,6 @@ body {
   cursor: pointer;
 }
 
-/* Posts */
-
 .post-card {
   background: #fafafa;
   padding: 20px;
@@ -64,22 +59,8 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.post-card h3 {
-  margin: 0;
-  margin-bottom: 10px;
-}
-
-.post-card p {
-  color: #555;
-}
-
-/* Buttons */
-
-.post-buttons {
-  margin-top: 10px;
-}
-
 .delete {
+  margin-top: 10px;
   background: #eee;
   border: none;
   padding: 6px 12px;
