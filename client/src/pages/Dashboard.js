@@ -13,8 +13,7 @@ export default function Dashboard() {
   const API = "https://blog-platform-api-5n5q.onrender.com";
 
   const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/");
   };
 
   const fetchPosts = async () => {
@@ -31,6 +30,11 @@ export default function Dashboard() {
   }, []);
 
   const createPost = async () => {
+    if (!title || !content) {
+      alert("Please enter title and content");
+      return;
+    }
+
     try {
       await axios.post(`${API}/posts`, {
         title,
@@ -63,7 +67,7 @@ export default function Dashboard() {
 
       <h2>Dashboard</h2>
 
-      {/* Create Post */}
+      {/* Create */}
       <div className="create-box">
         <input
           placeholder="Title"
@@ -77,18 +81,21 @@ export default function Dashboard() {
           onChange={(e) => setContent(e.target.value)}
         />
 
-        <button onClick={createPost}>Create Blog</button>
+        <button onClick={createPost}>
+          Create Blog
+        </button>
       </div>
 
       <hr />
 
       {/* Posts */}
-      {posts.map((post) => (
-        <div className="post-card" key={post._id}>
-          <h3>{post.title}</h3>
-          <p>{post.content}</p>
+      {posts
+        .filter(post => post.title && post.content)
+        .map((post) => (
+          <div className="post-card" key={post._id}>
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
 
-          <div className="post-buttons">
             <button
               className="delete"
               onClick={() => deletePost(post._id)}
@@ -96,8 +103,7 @@ export default function Dashboard() {
               Delete
             </button>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
