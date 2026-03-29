@@ -1,49 +1,42 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const navigate = useNavigate();
 
-  const loginUser = async (e) => {
-    e.preventDefault();
+const [email,setEmail] = useState("");
+const [password,setPassword] = useState("");
 
-    try {
-      const res = await axios.post(
-        "https://blog-platform-api-5n5q.onrender.com/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
+const login = async () => {
+  navigate("/dashboard");
+};
 
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
-    } catch (err) {
-      alert("Login failed");
-    }
-  };
+return (
+<div style={{padding:"40px"}}>
+<h2>Login</h2>
 
-  return (
-    <form onSubmit={loginUser}>
-      <h2>Login</h2>
+<input
+placeholder="Email"
+value={email}
+onChange={(e)=>setEmail(e.target.value)}
+/>
 
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
+<br/><br/>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+<input
+type="password"
+placeholder="Password"
+value={password}
+onChange={(e)=>setPassword(e.target.value)}
+/>
 
-      <button type="submit">Login</button>
-    </form>
-  );
+<br/><br/>
+
+<button onClick={login}>
+Login
+</button>
+
+</div>
+);
 }
