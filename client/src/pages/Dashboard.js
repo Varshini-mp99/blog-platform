@@ -17,12 +17,8 @@ export default function Dashboard() {
   };
 
   const fetchPosts = async () => {
-    try {
-      const res = await axios.get(`${API}/posts`);
-      setPosts(res.data);
-    } catch (err) {
-      console.log(err);
-    }
+    const res = await axios.get(`${API}/posts`);
+    setPosts(res.data);
   };
 
   useEffect(() => {
@@ -30,23 +26,16 @@ export default function Dashboard() {
   }, []);
 
   const createPost = async () => {
-    if (!title || !content) {
-      alert("Please enter title and content");
-      return;
-    }
+    if (!title.trim() || !content.trim()) return;
 
-    try {
-      await axios.post(`${API}/posts`, {
-        title,
-        content,
-      });
+    await axios.post(`${API}/posts`, {
+      title,
+      content,
+    });
 
-      setTitle("");
-      setContent("");
-      fetchPosts();
-    } catch (err) {
-      console.log(err);
-    }
+    setTitle("");
+    setContent("");
+    fetchPosts();
   };
 
   const deletePost = async (id) => {
@@ -57,7 +46,6 @@ export default function Dashboard() {
   return (
     <div className="container">
       
-      {/* Navbar */}
       <div className="navbar">
         <h2>Blog App</h2>
         <button className="logout-btn" onClick={logout}>
@@ -67,7 +55,6 @@ export default function Dashboard() {
 
       <h2>Dashboard</h2>
 
-      {/* Create */}
       <div className="create-box">
         <input
           placeholder="Title"
@@ -88,20 +75,24 @@ export default function Dashboard() {
 
       <hr />
 
-      {/* Posts */}
       {posts
-        .filter(post => post.title && post.content)
+        .filter((post) => post.title && post.content)
         .map((post) => (
           <div className="post-card" key={post._id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
+            <div className="post-header">
+              <h3>{post.title}</h3>
+            </div>
 
-            <button
-              className="delete"
-              onClick={() => deletePost(post._id)}
-            >
-              Delete
-            </button>
+            <p className="post-content">{post.content}</p>
+
+            <div className="post-actions">
+              <button
+                className="delete-btn"
+                onClick={() => deletePost(post._id)}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
     </div>
