@@ -5,44 +5,53 @@ body {
 }
 
 .container {
-  width: 75%;
+  width: 70%;
   margin: auto;
   background: white;
-  padding: 25px;
+  padding: 30px;
   min-height: 100vh;
 }
+
+/* Navbar */
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2f2f2f;
+  background: #2c2c2c;
   color: white;
-  padding: 18px;
-  margin-bottom: 25px;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 30px;
 }
 
 .logout-btn {
-  background: #ff3b3b;
+  background: #ff4d4d;
   color: white;
   border: none;
   padding: 8px 18px;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 4px;
 }
+
+.logout-btn:hover {
+  background: #ff1a1a;
+}
+
+/* Create section */
 
 .create-box {
   display: flex;
-  gap: 12px;
-  margin-top: 15px;
+  gap: 15px;
+  margin-top: 20px;
   margin-bottom: 25px;
 }
 
 .create-box input {
   padding: 12px;
   width: 260px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
 }
 
 .create-box button {
@@ -50,35 +59,45 @@ body {
   color: white;
   border: none;
   padding: 12px 18px;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 4px;
 }
+
+.create-box button:hover {
+  background: #000;
+}
+
+/* Cards */
 
 .post-card {
-  background: white;
-  padding: 20px;
+  background: #fafafa;
+  padding: 25px;
   margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.post-header h3 {
+.post-card h3 {
   margin: 0;
+  font-size: 20px;
 }
 
-.post-content {
-  margin-top: 10px;
+.post-card p {
+  margin-top: 8px;
   color: #555;
 }
 
-.post-actions {
-  margin-top: 15px;
-}
+/* Buttons */
 
 .delete-btn {
-  background: #f1f1f1;
+  margin-top: 15px;
+  background: #eee;
   border: none;
-  padding: 6px 14px;
+  padding: 7px 15px;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 4px;
+}
+
+.delete-btn:hover {
+  background: #ddd;
 }
